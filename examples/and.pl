@@ -9,34 +9,38 @@
 use Data::Dumper;
 use AI::Perceptron;
 
-print "Example of an And function using a perceptron.\n";
-print "Preset weights [y/N]? ";
-my $ans = <>;
+print( "Example: training a perceptron to recognize an 'AND' function.\n",
+       "usage: $0 [<threshold> <weight1> <weight2>]\n" );
 
-my @weights = (-0.8, 0.5, 0.5) if ($ans =~ /y/i);	# preset weights?
+my $p = AI::Perceptron->new
+                      ->num_inputs( 2 )
+                      ->learning_rate( 0.1 );
+if (@ARGV) {
+    $p->threshold( shift(@ARGV) )
+      ->weights([ shift(@ARGV), shift(@ARGV) ]);
+}
+
 my @training_exs = (
-		    [-1, 0, 0],
-		    [-1, 1, 0],
-		    [-1, 0, 1],
-		    [1, 1, 1],
+		    [-1 => -1, -1],
+		    [-1 =>  1, -1],
+		    [-1 => -1,  1],
+		    [ 1 =>  1,  1],
 		   );
 
-my $p = new Perceptron( Inputs => 2, N => 0.1, W => \@weights );
+print "\nBefore Training\n";
+dump_perceptron( $p );
 
-print "\nWeights: ", join(', ', $p->weights), "\n";
+print "\nTraining...\n";
+$p->train( @training_exs );
 
-foreach (@training_exs) {
-    my ($t, @X) = @$_;
-    print "Computing X = {", join(', ', @X), "}, target=$t: ", $p->compute(@X), "\n";
+print "\nAfter Training\n";
+dump_perceptron( $p );
+
+sub dump_perceptron {
+    my $p = shift;
+    print "\tThreshold: ", $p->threshold, " Weights: ", join(', ', @{ $p->weights }), "\n";
+    foreach my $inputs (@training_exs) {
+	my $target = $inputs->[0];
+	print "\tInputs = {", join(',', @$inputs[1..2]), "}, target=$target, output=", $p->compute_output( @$inputs[1..2] ), "\n";
+    }
 }
-
-$p->train(@training_exs);
-
-print "\nWeights: ", join(', ', $p->weights), "\n";
-
-foreach (@training_exs) {
-    my ($t, @X) = @$_;
-    print "Computing X = {", join(', ', @X), "}, target=$t: ", $p->compute(@X), "\n";
-}
-
-

@@ -1,0 +1,27 @@
+--------------
+AI::Perceptron
+--------------
+
+Copyright (c) 1999-2000 Steve Purkis.  All rights reserved.  This
+module can be distributed or modified under the 'Artistic License',
+as distributed with Perl.
+
+
+Overview
+--------
+
+This module is meant to be an introduction to the internal operations
+of Neural Networks.  It lets the user create a single node in a neural
+net based on the Perceptron model.
+
+For similar functionality, see Statistics::LTU.
+
+
+References
+----------
+
+Machine Learning, Tom M. Mitchell
+
+
+--
+ Steve Purkis <spurkis@epn.nu>

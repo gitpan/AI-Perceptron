@@ -1,0 +1,6 @@
+Changes
+MANIFEST
+Makefile.PL
+Perceptron.pm
+test.pl
+examples/and.pl
